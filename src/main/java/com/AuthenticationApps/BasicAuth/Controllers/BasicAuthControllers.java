@@ -22,8 +22,8 @@ public class BasicAuthControllers {
     }
 
     @PatchMapping("/basicUserLogin")
-    public BasicAuthResponseUtils login(@RequestBody BasicAuthUser user){
-        return service.loginUser(user);
+    public ResponseEntity<BasicAuthResponseUtils> login(@RequestBody BasicAuthUser user){
+        return new ResponseEntity<>(service.loginUser(user),HttpStatus.OK);
     }
 
     @PatchMapping("/basicUserLogout")

@@ -1,12 +1,16 @@
 package com.AuthenticationApps.BasicAuth.utils;
 
 import com.AuthenticationApps.BasicAuth.entity.BasicAuthUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class BasicAuthReqBodyValidator {
+
+    @Autowired
+    Encoder encoder;
 
     public BasicAuthResponseUtils checkIfUnameEmpty(String uname){
         if (uname == null)
@@ -33,7 +37,15 @@ public class BasicAuthReqBodyValidator {
     }
 
     public BasicAuthResponseUtils authenticateUser(BasicAuthUser actualUser, BasicAuthUser user) {
-        if (!(actualUser.getPwd().equals(user.getPwd()))){
+        String encryptedPwd = actualUser.getPwd();
+        String decryptedPwd = "";
+        if (actualUser.getEncryptionType().equals("base64"))
+            decryptedPwd = encoder.base64Decoder(encryptedPwd);
+        else
+            decryptedPwd = encoder.encryptingUsingSecretKey(encryptedPwd, user.getDigestKeyValue());
+        System.out.println("***************&&&&&&&&&&&&"+decryptedPwd);
+        System.out.println("**************&&&&&&&&&&"+user.getPwd());
+        if (!(user.getPwd().equals(decryptedPwd))){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     "Password did not match. Login failed");
         }

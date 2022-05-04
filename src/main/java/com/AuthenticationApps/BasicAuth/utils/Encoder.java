@@ -19,8 +19,8 @@ public class Encoder {
     }
 
     public String base64Decoder(String encodedString){
-        String decodedString = Arrays.toString(Base64.getDecoder().decode(encodedString));
-        System.out.println("************Encoded String: "+encodedString);
+        String decodedString = new String(Base64.getDecoder().decode(encodedString));
+        System.out.println("************Decoded String: "+decodedString.toString());
         return decodedString;
     }
 

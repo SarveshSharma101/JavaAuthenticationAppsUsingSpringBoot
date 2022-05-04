@@ -32,6 +32,7 @@ public class BasicAuthSvcImp implements AuthenticationService {
     public BasicAuthResponseUtils registerUser(BasicAuthUser user) throws ResponseStatusException {
         String uname = user.getUName();
         String password = user.getPwd();
+        BasicAuthUser registeredUser=null;
         response = validator.checkIfUnameEmpty(uname);
         if (response != null) return response;
 
@@ -47,7 +48,13 @@ public class BasicAuthSvcImp implements AuthenticationService {
                         "There was some error in encoding");
         }
         user.setPwd(encryptedPassword);
-        BasicAuthUser registeredUser = repo.save(user);
+        try {
+            registeredUser = repo.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED,
+                    "User already exist");
+        }
         response = BasicAuthResponseUtils.builder()
                 .message("Registration was successful")
                 .user(registeredUser)
@@ -75,14 +82,13 @@ public class BasicAuthSvcImp implements AuthenticationService {
         response = validator.authenticateUser(actualUser, user);
         if (response!=null) return response;
 
-        int value = repo.updateLoginStatus(true, uname);
+        repo.updateLoginStatus(true, uname);
         BasicAuthUser loggedInUser = repo.findByuName(uname);
         response = BasicAuthResponseUtils.builder()
                 .message("Login was successful")
                 .user(loggedInUser)
                 .statusCode(HttpStatus.OK.value())
                 .build();
-
         return response;
     }
 

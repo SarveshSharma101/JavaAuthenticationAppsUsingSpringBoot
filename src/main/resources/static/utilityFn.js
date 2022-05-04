@@ -16,6 +16,7 @@ function getUnameAndPassword() {
 function registerUser() {
   const [uname, password] = getUnameAndPassword();
   const url = "http://localhost:8090/basicUserRegister";
+  const nxtUrl = "http://localhost:8090/login";
   const Http = new XMLHttpRequest();
   Http.open("POST", url, false);
   Http.setRequestHeader("Content-Type", "application/json");
@@ -42,8 +43,16 @@ function registerUser() {
     Http.status == 201
     ) {
     console.log(Http.responseText);
-    window.location.href = url;
+    window.location.href = nxtUrl;
   } else {
+    if (Http.status == 417) {
+      alert("user already exist, choose another user name");
+      return;
+    } else if (Http.status == 400) {
+      alert("Bad Request, username and password field cannot be empty");
+      return;
+    }
+    alert("Some thing went wrong");
     console.log(Http.response);
     console.error("There was some error");
   }
@@ -52,8 +61,9 @@ function registerUser() {
 function loginUser() {
   const [uname, password] = getUnameAndPassword();
   const url = "http://localhost:8090/basicUserLogin";
+  const nxtUrl = "http://localhost:8090/app";
   const Http = new XMLHttpRequest();
-  Http.open("POST", url, false);
+  Http.open("PATCH", url, false);
   Http.setRequestHeader("Content-Type", "application/json");
   var reqBody = { uname: uname, pwd: password };
 
@@ -62,7 +72,19 @@ function loginUser() {
 
   if (Http.readyState == 4 && Http.status == 200) {
     console.log(Http.responseText);
+    window.location.href = nxtUrl;
   } else {
+    if (Http.status == 404){
+      alert("Not user found with the provided username")
+      return
+    }else if (Http.status == 401) {
+      alert("Authentication failed, password didn't match")
+      return
+    }else if (Http.status == 400) {
+      alert("Bad Request, username and password field cannot be empty");
+      return;
+    }
+    
     console.log(Http.responseText);
     console.error("There was some error");
   }
@@ -71,7 +93,7 @@ function loginUser() {
 function logout() {
   const url = "http://localhost:8090/basicUserLogout";
   const Http = new XMLHttpRequest();
-  Http.open("POST", url, false);
+  Http.open("PATCH", url, false);
   Http.setRequestHeader("Content-Type", "application/json");
   Http.send();
 
