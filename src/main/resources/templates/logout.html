@@ -14,14 +14,21 @@
   <link rel="stylesheet" href="../static/index.css">
 </head>
 
-<body>
+<body onload="onload()">
 
-  <div class="card container" style="width: 24rem;">
+  <div class="card container" style="width: 24rem; margin-top: 10%;">
+    <h5 class="card-title">Welcome</h5>
+
     <div class="card-body">
-      <h5 class="card-title">Welcome</h5>
+        <div class="card-header">
+          <h6 id="username">Username</h6>
+        </div>
+      
+      <div style="margin-top: 10%;">
+        <button type="button" class="btn btn-info">Get User by username</button>
 
-      <button type="button" class="btn btn-primary">Get All Users</button>
-      <button type="button" class="btn btn-info">Get User by username</button>
+        <button type="button" class="btn btn-primary">Get All Users</button>
+      </div>
 
       <div class="input-group mb-3" style="margin-top: 5%;">
         <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">

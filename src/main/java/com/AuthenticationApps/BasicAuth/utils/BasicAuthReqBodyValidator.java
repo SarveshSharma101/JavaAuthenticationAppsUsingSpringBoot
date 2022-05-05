@@ -42,7 +42,7 @@ public class BasicAuthReqBodyValidator {
         if (actualUser.getEncryptionType().equals("base64"))
             decryptedPwd = encoder.base64Decoder(encryptedPwd);
         else
-            decryptedPwd = encoder.encryptingUsingSecretKey(encryptedPwd, user.getDigestKeyValue());
+            decryptedPwd = encoder.dencryptingUsingSecretKey(encryptedPwd, actualUser.getDigestKeyValue());
         System.out.println("***************&&&&&&&&&&&&"+decryptedPwd);
         System.out.println("**************&&&&&&&&&&"+user.getPwd());
         if (!(user.getPwd().equals(decryptedPwd))){

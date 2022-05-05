@@ -26,8 +26,8 @@ public class BasicAuthControllers {
         return new ResponseEntity<>(service.loginUser(user),HttpStatus.OK);
     }
 
-    @PatchMapping("/basicUserLogout")
-    public BasicAuthResponseUtils logout(@RequestBody String userName){
+    @PatchMapping("/basicUserLogout/{uname}")
+    public BasicAuthResponseUtils logout(@PathVariable("uname") String userName){
         return service.logoutUser(userName);
     }
 

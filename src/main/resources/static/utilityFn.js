@@ -29,10 +29,10 @@ function registerUser() {
         return
     }
     reqBody.encryptionType = "digest";
-    reqBody.key = digest;
+    reqBody.digestKeyValue = digest;
   } else {
     reqBody.encryptionType = "base64";
-    reqBody.key = "";
+    reqBody.digestKeyValue = "";
   }
 
   console.log("-------------->", reqBody);
@@ -72,6 +72,7 @@ function loginUser() {
 
   if (Http.readyState == 4 && Http.status == 200) {
     console.log(Http.responseText);
+    localStorage.setItem('uname', uname)
     window.location.href = nxtUrl;
   } else {
     if (Http.status == 404){
@@ -91,19 +92,26 @@ function loginUser() {
 }
 
 function logout() {
-  const url = "http://localhost:8090/basicUserLogout";
+  const uname = localStorage.getItem("uname");
+
+  const url = "http://localhost:8090/basicUserLogout/" + uname;
+  const nxtUrl = "http://localhost:8090/basicUserRegister";
+
   const Http = new XMLHttpRequest();
   Http.open("PATCH", url, false);
   Http.setRequestHeader("Content-Type", "application/json");
   Http.send();
 
-
-  if (
-    Http.readyState == 4 &&
-    Http.status == 200
-    ) {
+  if (Http.readyState == 4 && Http.status == 200) {
     console.log(Http.responseText);
+    localStorage.removeItem("uname");
+    window.location.href = nxtUrl;
   } else {
     console.error("There was some error");
   }
+}
+
+function onload() {
+  console.log("-----", localStorage.getItem("uname"))
+  document.getElementById("username").innerHTML = localStorage.getItem("uname");
 }
