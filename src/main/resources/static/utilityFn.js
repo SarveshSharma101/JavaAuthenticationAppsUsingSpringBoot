@@ -115,3 +115,62 @@ function onload() {
   console.log("-----", localStorage.getItem("uname"))
   document.getElementById("username").innerHTML = localStorage.getItem("uname");
 }
+
+function getUserDetails(username) {
+  var url="http://localhost:8090/get";
+  if (username) {
+    url = url + "/" + document.getElementById("userToSearch").value;
+  }
+
+  const Http = new XMLHttpRequest();
+  Http.open("GET", url, false);
+  Http.setRequestHeader("Content-Type", "application/json");
+  Http.send();
+
+
+  if (Http.readyState == 4 && Http.status == 200) {
+    var response = JSON.parse(Http.responseText);
+    console.log(response);
+    console.log(typeof response);
+    if (Array.isArray(response)) {
+      for (let i = 0; i < response.length; i++) {
+        const element = response[i];
+        getUser(
+          element["user"]["uname"],
+          element["user"]["loginStatus"],
+          element["user"]["encryptionType"]
+        );
+      }
+      return
+    }
+
+    getUser(
+      response["user"]["uname"],
+      response["user"]["loginStatus"],
+      response["user"]["encryptionType"]
+    );
+  } else {
+    console.log(Http.responseText);
+    console.error("There was some error");
+  }
+}
+
+function getUser(uname, lStatus, eType) {
+  document.getElementById("table").style.display='block';
+
+  var tBody = document.getElementById("fillMe")
+  var tRow = document.createElement("tr")
+  var tDataUsername = document.createElement("td")
+  var tDataLoginStatus = document.createElement("td")
+  var tDataEncryptionType = document.createElement("td")
+
+  tDataUsername.innerHTML = uname;
+  tDataLoginStatus.innerHTML = lStatus;
+  tDataEncryptionType.innerHTML = eType;
+
+  tRow.appendChild(tDataUsername)
+  tRow.appendChild(tDataLoginStatus);
+  tRow.appendChild(tDataEncryptionType);
+
+  tBody.appendChild(tRow)
+}

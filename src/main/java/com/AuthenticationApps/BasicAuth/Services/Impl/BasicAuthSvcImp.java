@@ -106,7 +106,7 @@ public class BasicAuthSvcImp implements AuthenticationService {
         }
         BasicAuthUser user = repo.findByuName(uname);
         response = BasicAuthResponseUtils.builder()
-                .message("Login was successful")
+                .message("successful")
                 .user(user)
                 .statusCode(HttpStatus.OK.value())
                 .build();

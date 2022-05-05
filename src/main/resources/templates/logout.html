@@ -16,7 +16,7 @@
 
 <body onload="onload()">
 
-  <div class="card container" style="width: 24rem; margin-top: 10%;">
+  <div class="card container" style="width: 30rem; margin-top: 10%;">
     <h5 class="card-title">Welcome</h5>
 
     <div class="card-body">
@@ -25,14 +25,31 @@
         </div>
       
       <div style="margin-top: 10%;">
-        <button type="button" class="btn btn-info">Get User by username</button>
+        <button type="button" class="btn btn-info" onclick="getUserDetails(true)">Get User by username</button>
 
-        <button type="button" class="btn btn-primary">Get All Users</button>
+        <button type="button" class="btn btn-primary" onclick="getUserDetails()">Get All Users</button>
       </div>
 
       <div class="input-group mb-3" style="margin-top: 5%;">
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+        <input type="text" class="form-control" placeholder="Username" aria-label="Username" id="userToSearch" aria-describedby="basic-addon1">
       </div>
+
+      <table class="table" style="display: none;" id="table">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Login Status</th>
+            <th scope="col">Encryption Type</th>
+          </tr>
+        </thead>
+        <tbody id="fillMe">
+          <!-- <tr>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr> -->
+        </tbody>
+      </table>
 
       <button id="logout" type="button" class="btn btn-danger" onclick="logout()">Logout</button>
     </div>
