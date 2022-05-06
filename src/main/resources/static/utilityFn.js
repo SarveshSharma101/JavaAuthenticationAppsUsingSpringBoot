@@ -95,7 +95,7 @@ function logout() {
   const uname = localStorage.getItem("uname");
 
   const url = "http://localhost:8090/basicUserLogout/" + uname;
-  const nxtUrl = "http://localhost:8090/basicUserRegister";
+  const nxtUrl = "http://localhost:8090";
 
   const Http = new XMLHttpRequest();
   Http.open("PATCH", url, false);
@@ -136,9 +136,9 @@ function getUserDetails(username) {
       for (let i = 0; i < response.length; i++) {
         const element = response[i];
         getUser(
-          element["user"]["uname"],
-          element["user"]["loginStatus"],
-          element["user"]["encryptionType"]
+          element["uname"],
+          element["loginStatus"],
+          element["encryptionType"]
         );
       }
       return
